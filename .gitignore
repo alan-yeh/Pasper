@@ -1,0 +1,12 @@
+# OS X
+.DS_Store
+
+# Windows
+*Thumbs.db
+
+# Jekyll build
+_site
+.sass-cache
+node_modules
+
+*.sh

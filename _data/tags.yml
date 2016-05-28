@@ -1,0 +1,12 @@
+#标签配置
+- name: Fables
+  cover: assets/images/cover2.jpg
+  description: A series of short stories that make you think.
+  
+- name: Speeches
+  cover: assets/images/cover7.jpg
+  description: Some of the greatest words ever spoken.
+
+- name: Fiction
+  cover: assets/images/cover1.jpg
+  description: A 6-post collection

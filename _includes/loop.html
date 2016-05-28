@@ -1,0 +1,52 @@
+    <!-- Previous/next page links - only displayed on page 2+ -->
+    <div class="extra-pagination inner">
+        {% if page.class == 'home-template' %}
+            {% include pagination_post.html %}
+        {% elsif page.class == 'page-template' %}
+            {% include pagination_post.html %}
+        {% elsif page.class == 'tag-template' %}
+            {% include pagination_tag.html %}
+        {% else %}
+            {% include pagination_post.html %}
+        {% endif %}
+    </div>
+
+    <!-- This is the post loop - each post will be output using this markup -->
+    {% for post in paginator.posts %}
+    <article class="post">
+        <header class="post-header">
+            <h2 class="post-title"><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h2>
+        </header>
+        <section class="post-excerpt">
+            <p>{{ post.content | strip_html | truncate: 200 }} <a class="read-more" href="{{ post.url }}">&raquo;</a></p>
+        </section>
+        <footer class="post-meta">
+            {% if site.image %}<img class="author-thumb" src="{{ site.baseurl }}/{{ site.image }}" alt="Author image" nopin="nopin" />{% endif %}
+            <!-- author -->
+            <a href='{{ site.baseurl }}/about'>{{ site.author }}</a>
+            <!-- [[tags prefix=" on "]] -->
+            {% if post.tags.size > 0 %} 
+                on 
+                {% for tag in post.tags %}
+                    {% if forloop.index == post.tags.size %}
+                       <a href='{{ site.baseurl }}/tag/{{ tag }}'>{{ tag }}</a>
+                    {% else %}
+                       <a href='{{ site.baseurl }}/tag/{{ tag }}'>{{ tag }}</a>,
+                    {% endif %}   
+                {% endfor %}
+            {% endif %}
+            <time class="post-date" datetime="{{ post.date | date:'%Y-%m-%d' }}">{{ post.date | date_to_string }}</time>
+        </footer>
+    </article>
+    {% endfor %}
+
+    <!-- Previous/next page links - displayed on every page -->
+    {% if page.class == 'home-template' %}
+        {% include pagination_post.html %}
+    {% elsif page.class == 'page-template' %}
+        {% include pagination_post.html %}
+    {% elsif page.class == 'tag-template' %}
+        {% include pagination_tag.html %}
+    {% else %}
+        {% include pagination_post.html %}
+    {% endif %}

@@ -1,0 +1,161 @@
+---
+layout: default
+class: 'post-template'
+---
+<!-- < default -->
+
+<!-- The comment above "< default" means - insert everything in this file into -->
+<!-- the [body] of the default.hbs template, which contains our header/footer. -->
+
+<!-- Everything inside the #post tags pulls data from the post -->
+<!-- #post -->
+{% if page.cover %}
+	{% assign page_cover = page.cover %}
+{% elsif page.tags %}
+	{% for item in page.tags %}
+		{% if page_cover %}
+			{% break %}
+		{% endif %}
+		{% for tag in site.data.tags %}
+			{% if tag.name == item and tag.cover != null %}
+				{% assign page_cover = tag.cover %}
+				{% break %}
+			{% endif %}
+		{% endfor %}
+	{% endfor %}
+{% endif %}
+
+<header class="main-header post-head {% if page_cover %}" style="background-image: url({{ site.baseurl }}/{{ page_cover }}) {% else %}no-cover{% endif %}">
+    <nav class="main-nav {% if page.cover %} overlay {% endif %} clearfix">
+        <a class="blog-logo" href="{{ site.baseurl }}/"><img src="{{ site.baseurl }}/{{ site.logo }}" alt="Blog Logo" /></a>
+        <a class="menu-button icon-menu" href="#"><span class="word">Menu</span></a>
+    </nav>
+</header>
+
+<main class="content" role="main">
+
+    <article class="{% if page.subclass %}{{ page.subclass }}{% else %}post tag-fiction{% endif %}">
+
+        <header class="post-header">
+            <h1 class="post-title">{{ page.title }}</h1>
+            <section class="post-meta">
+            <!-- <a href='{{ site.baseurl }}/{{ page.about }}'>{{ site.author }}</a> -->
+            <time class="post-date" datetime="{{ page.date | date:'%Y-%m-%d' }}">{{ page.date | date_to_string }}</time>
+                <!-- [[tags prefix=" on "]] -->
+                {% if page.tags.size > 0 %} 
+                on 
+                {% for tag in page.tags %}
+                    {% if forloop.index == page.tags.size %}
+                       <a href='{{ site.baseurl }}/tag/{{ tag }}'>{{ tag }}</a>
+                    {% else %}
+                       <a href='{{ site.baseurl }}/tag/{{ tag }}'>{{ tag }}</a>,
+                    {% endif %}   
+                {% endfor %}
+                {% endif %}
+            </section>
+        </header>
+
+        <section class="post-content">
+            
+            {{ content }}
+
+        </section>
+
+        <footer class="post-footer">
+
+            <!-- Everything inside the #author tags pulls data from the author -->
+            <!-- #author-->
+
+            {% if site.image %}
+            <figure class="author-image">
+                <a class="img" href="{{ site.baseurl }}/about" style="background-image: url({{ site.baseurl }}/{{ site.image }})"><span class="hidden">{{ site.nickname }}'s Picture</span></a>
+            </figure>
+            {% endif %}
+
+            <section class="author">
+                <h4><a href="{{ site.baseurl }}/about">{{ site.nickname }}</a></h4>
+                
+                {% if site.bio %}
+                    <p> {{ site.bio }}</p>
+                {% endif %}
+                <div class="author-meta">
+                    {% if site.location %}<span class="author-location icon-location"> {{ site.location }}</span>{% endif %} 
+                    {% if site.url %}<span class="author-link icon-link"><a href="{{ site.url }}"> {{ site.url }}</a></span>{% endif %} 
+                </div>
+            </section>
+
+            <!-- /author  -->
+            
+            <!-- Add Comments -->
+            {% if site.comments_duoshuo %}
+                {% include comments_duoshuo.html %}
+            {% endif %}
+            
+            {% if site.comments_disqus %}
+                {% include comments_disqus.html %}
+            {% endif %}
+            
+        </footer>
+
+    </article>
+
+</main>
+
+<aside class="read-next">
+    {{ post.url | remove: '/' }}
+    {% if page.next %}
+    	{% if page.next.cover %}
+			{% assign next_cover = page.next.cover %}
+		{% elsif page.next.tags %}
+			{% for item in page.next.tags %}
+				{% if next_cover %}
+					{% break %}
+				{% endif %}
+				{% for tag in site.data.tags %}
+					{% if tag.name == item and tag.cover != null %}
+						{% assign next_cover = tag.cover %}
+						{% break %}
+					{% endif %}
+				{% endfor %}
+			{% endfor %}
+		{% endif %}
+
+    <!-- [[! next_post ]] -->
+    <a class="read-next-story {% if next_cover %}" style="background-image: url({{ site.baseurl }}/{{ next_cover }}){% else %}no-cover{% endif %}" href="{{ page.next.url }}">
+        <section class="post">
+            <h2>{{ page.next.title }}</h2>
+            <p>{{ page.next.content | strip_html | truncate:150 }}</p>
+        </section>
+    </a>
+        
+    <!-- [[! /next_post ]] -->
+    {% endif %}
+    {% if page.previous %}
+    	{% if page.previous.cover %}
+			{% assign previous_cover = page.previous.cover %}
+		{% elsif page.previous.tags %}
+			{% for item in page.previous.tags %}
+				{% if previous_cover %}
+					{% break %}
+				{% endif %}
+				{% for tag in site.data.tags %}
+					{% if tag.name == item and tag.cover != null %}
+						{% assign previous_cover = tag.cover %}
+						{% break %}
+					{% endif %}
+				{% endfor %}
+			{% endfor %}
+		{% endif %}
+		
+    <!-- [[! prev_post ]] -->
+    <a class="read-next-story prev {% if previous_cover %}" style="background-image: url({{ site.baseurl }}/{{ previous_cover }}){% else %}no-cover{% endif %}" href="{{ page.previous.url }}">
+        <section class="post">
+            <h2>{{ page.previous.title }}</h2>
+            <p>{{ page.previous.content | strip_html | truncate:150 }}</p>
+        </section>
+    </a>
+    <!-- [[! /prev_post ]] -->
+    {% endif %}
+</aside>
+
+<!-- /post -->
