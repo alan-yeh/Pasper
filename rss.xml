@@ -1,7 +1,7 @@
 ---
 layout: atom
 ---
-{% for post in page.posts %}
+{% for post in site.posts %}
 <item>
     <title><![CDATA[{{ post.title }}]]></title>
     <link>{{ site.address }}{{ site.baseurl }}{{ post.url }}</link>

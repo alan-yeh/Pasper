@@ -1,17 +1,25 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-<channel>
-   {% if page.grouptype == 'category' %}
-      <title>{{ site.short_url }} - Category: {{ page.category }}</title>
-   {% else %}
-      <title>{{ site.short_url }}</title>
-   {% endif %}
-   <link>{{ site.url }}</link>
-   <description>{{ site.description }}</description>
-   <language>{{ site.language }}</language>
-   <managingEditor> {{ site.author }}</managingEditor>
-   <atom:link href="rss" rel="self" type="application/rss+xml" />
-   {{content}}
-</channel>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"
+    xmlns:content="http://purl.org/rss/1.0/modules/content/"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd"
+    xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+    <channel>
+        <atom:link href="rss" rel="self" type="application/rss+xml" />
+        {% if page.grouptype == 'tag' %}
+        <title><![CDATA[{{ site.name }} - {{ page.tag }}]]></title>
+        <link>{{ site.address }}{{ site.baseurl }}/tag/{{ page.tag }}</link>
+<!--        需要修复-->
+        <description><![CDATA[{{ site.data.tags[page.tag].description }}]]></description>
+        {% else %}
+        <title><![CDATA[{{ site.name }}]]></title>
+        <link>{{ site.address }}{{ site.baseurl }}</link>
+        <description><![CDATA[{{ site.description }}]]></description>
+        {% endif %}
+        
+        <language>{{ site.language }}</language>
+        <managingEditor><![CDATA[{{ site.author }}]]></managingEditor>
+        {{content}}
+    </channel>
 </rss>
